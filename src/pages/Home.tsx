@@ -1,77 +1,187 @@
-import { useEffect, useState } from 'react';
-import { HeroSection } from '../components/HeroSection';
-import { FeaturedArticles } from '../components/FeaturedArticles';
-import { RecentArticles } from '../components/RecentArticles';
-import { NewsletterSection } from '../components/NewsletterSection';
-import { CTASection } from '../components/CTASection';
-import { ArticleCardSkeleton, ArticleCardCompactSkeleton } from '../components/Skeleton';
-import { articleService } from '../services/articleService';
-import type { Article } from '../types';
+import { Link } from "react-router-dom";
+import ArticleCard from "@/components/ArticleCard";
+import NewsletterCard from "@/components/NewsletterCard";
+import SectionHeading from "@/components/SectionHeading";
+import type { Article } from "@/types/article";
 
-export function Home() {
-  const [featured, setFeatured] = useState<Article[]>([]);
-  const [recent, setRecent] = useState<Article[]>([]);
-  const [loading, setLoading] = useState(true);
+const featured: Article[] = [
+  {
+    id: "f-1",
+    category: "Desenvolvimento web",
+    publishedAt: "4 out 2025",
+    title: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
+    excerpt:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam in augue ligula. Donec sed eros vel lacus condimentum sollicitudin...",
+    authorName: "John Doe",
+    readMinutes: 6,
+    views: 122,
+    likes: 1,
+    thumbnailVariant: "rose",
+  },
+  {
+    id: "f-2",
+    category: "Desenvolvimento web",
+    publishedAt: "4 out 2025",
+    title: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
+    excerpt:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam in augue ligula. Donec sed eros vel lacus condimentum sollicitudin...",
+    authorName: "John Doe",
+    readMinutes: 6,
+    views: 122,
+    likes: 1,
+    thumbnailVariant: "violet",
+  },
+  {
+    id: "f-3",
+    category: "Desenvolvimento web",
+    publishedAt: "4 out 2025",
+    title: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
+    excerpt:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam in augue ligula. Donec sed eros vel lacus condimentum sollicitudin...",
+    authorName: "John Doe",
+    readMinutes: 6,
+    views: 122,
+    likes: 1,
+    thumbnailVariant: "sky",
+  },
+  {
+    id: "f-4",
+    category: "Desenvolvimento web",
+    publishedAt: "4 out 2025",
+    title: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
+    excerpt:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam in augue ligula. Donec sed eros vel lacus condimentum sollicitudin...",
+    authorName: "John Doe",
+    readMinutes: 6,
+    views: 122,
+    likes: 1,
+    thumbnailVariant: "mint",
+  },
+];
 
-  useEffect(() => {
-    async function loadData() {
-      try {
-        const [featuredData, recentData] = await Promise.all([
-          articleService.getFeatured(),
-          articleService.getAll(1, 4),
-        ]);
-        setFeatured(Array.isArray(featuredData) ? featuredData : []);
-        setRecent(recentData.data || []);
-      } catch {
-        setFeatured([]);
-        setRecent([]);
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadData();
-  }, []);
+const recent: Article[] = [
+  {
+    id: "r-1",
+    category: "Desenvolvimento web",
+    publishedAt: "4 out 2025",
+    title: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
+    excerpt:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam in augue ligula. Donec sed eros vel lacus condimentum sollicitudin...",
+    authorName: "John Doe",
+    readMinutes: 6,
+    views: 122,
+    likes: 1,
+  },
+  {
+    id: "r-2",
+    category: "Desenvolvimento web",
+    publishedAt: "4 out 2025",
+    title: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
+    excerpt:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam in augue ligula. Donec sed eros vel lacus condimentum sollicitudin...",
+    authorName: "John Doe",
+    readMinutes: 6,
+    views: 122,
+    likes: 1,
+  },
+  {
+    id: "r-3",
+    category: "Desenvolvimento web",
+    publishedAt: "4 out 2025",
+    title: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
+    excerpt:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam in augue ligula. Donec sed eros vel lacus condimentum sollicitudin...",
+    authorName: "John Doe",
+    readMinutes: 6,
+    views: 122,
+    likes: 1,
+  },
+  {
+    id: "r-4",
+    category: "Desenvolvimento web",
+    publishedAt: "4 out 2025",
+    title: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
+    excerpt:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam in augue ligula. Donec sed eros vel lacus condimentum sollicitudin...",
+    authorName: "John Doe",
+    readMinutes: 6,
+    views: 122,
+    likes: 1,
+  },
+];
 
+export default function Home() {
   return (
     <div>
-      <HeroSection />
-      {loading ? (
-        <>
-          <section className="py-16 px-4">
-            <div className="max-w-7xl mx-auto">
-              <div className="mb-8">
-                <div className="h-8 w-64 bg-bg-card-hover rounded animate-pulse mb-2" />
-                <div className="h-4 w-80 bg-bg-card-hover rounded animate-pulse" />
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {Array.from({ length: 4 }).map((_, i) => (
-                  <ArticleCardSkeleton key={i} />
-                ))}
-              </div>
-            </div>
-          </section>
-          <section className="py-16 px-4">
-            <div className="max-w-7xl mx-auto">
-              <div className="mb-8">
-                <div className="h-8 w-64 bg-bg-card-hover rounded animate-pulse mb-2" />
-                <div className="h-4 w-72 bg-bg-card-hover rounded animate-pulse" />
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {Array.from({ length: 4 }).map((_, i) => (
-                  <ArticleCardCompactSkeleton key={i} />
-                ))}
-              </div>
-            </div>
-          </section>
-        </>
-      ) : (
-        <>
-          {featured.length > 0 && <FeaturedArticles articles={featured} />}
-          {recent.length > 0 && <RecentArticles articles={recent} />}
-        </>
-      )}
-      <NewsletterSection />
-      <CTASection />
+      <section className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto max-w-2xl py-20 text-center">
+          <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+            Explore o Futuro da <span className="text-[#00C1D5]">Tecnologia</span>
+          </h1>
+          <p className="mx-auto mt-6 max-w-lg text-sm leading-relaxed text-white/55">
+            Artigos sobre IA, desenvolvimento,
+            <br />
+            DevOps e as últimas tendências tecnológicas
+          </p>
+
+          <div className="mt-10 flex flex-col items-center gap-3">
+            <Link
+              to="/artigos"
+              className="inline-flex h-11 w-80 max-w-full items-center justify-center rounded-md bg-[#00C1D5] text-sm font-semibold text-black transition hover:bg-[#21D4E7]"
+            >
+              Explorar Artigos
+            </Link>
+            <Link
+              to="/cadastrar"
+              className="inline-flex h-11 w-80 max-w-full items-center justify-center rounded-md border border-white/10 bg-black/20 text-sm font-semibold text-white/70 transition hover:border-white/20 hover:bg-black/30 hover:text-white"
+            >
+              Começar a Escrever
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-6 pb-16">
+        <SectionHeading
+          title="Artigos em Destaque"
+          subtitle="Os melhores conteúdos selecionados para você"
+          actionLabel="Ver todos"
+          actionTo="/artigos"
+        />
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {featured.map(article => (
+            <ArticleCard key={article.id} article={article} variant="featured" to={`/artigos/${article.id}`} />
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-6 pb-16">
+        <SectionHeading title="Artigos Recentes" subtitle="Conteúdo recente da comunidade" />
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {recent.map(article => (
+            <ArticleCard key={article.id} article={article} variant="compact" to={`/artigos/${article.id}`} />
+          ))}
+        </div>
+      </section>
+
+      <NewsletterCard />
+
+      <section className="mx-auto max-w-6xl px-6 py-16">
+        <div className="mx-auto max-w-2xl text-center">
+          <h3 className="text-xl font-semibold tracking-tight">Compartilhe Seu Conhecimento</h3>
+          <p className="mt-2 text-sm leading-relaxed text-white/55">
+            Junte-se à nossa comunidade de escritores e compartilhe suas experiências e conhecimentos em tecnologia
+          </p>
+          <div className="mt-7">
+            <Link
+              to="/cadastrar"
+              className="inline-flex h-11 items-center justify-center rounded-md bg-[#00C1D5] px-6 text-sm font-semibold text-black transition hover:bg-[#21D4E7]"
+            >
+              Criar Conta Gratuita
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

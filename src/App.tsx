@@ -1,55 +1,23 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
-import { Layout } from './components/Layout';
-import { ProtectedRoute } from './components/ProtectedRoute';
-import { Home } from './pages/Home';
-import { Login } from './pages/Login';
-import { Register } from './pages/Register';
-import { Articles } from './pages/Articles';
-import { ArticleDetail } from './pages/ArticleDetail';
-import { Dashboard } from './pages/Dashboard';
-import { ArticleForm } from './pages/ArticleForm';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import SiteLayout from "@/layouts/SiteLayout";
+import Home from "@/pages/Home";
+import Articles from "@/pages/Articles";
+import ArticleDetail from "@/pages/ArticleDetail";
+import Login from "@/pages/Login";
+import Register from "@/pages/Register";
 
-function App() {
+export default function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/cadastro" element={<Register />} />
-            <Route path="/artigos" element={<Articles />} />
-            <Route path="/artigos/:id" element={<ArticleDetail />} />
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/artigos/novo"
-              element={
-                <ProtectedRoute>
-                  <ArticleForm />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/artigos/:id/editar"
-              element={
-                <ProtectedRoute>
-                  <ArticleForm />
-                </ProtectedRoute>
-              }
-            />
-          </Route>
-        </Routes>
-      </AuthProvider>
-    </BrowserRouter>
+    <Router>
+      <Routes>
+        <Route element={<SiteLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/artigos" element={<Articles />} />
+          <Route path="/artigos/:slug" element={<ArticleDetail />} />
+          <Route path="/entrar" element={<Login />} />
+          <Route path="/cadastrar" element={<Register />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 }
-
-export default App;

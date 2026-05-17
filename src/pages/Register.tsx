@@ -1,141 +1,54 @@
-import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { Link } from "react-router-dom";
 
-export function Register() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [formError, setFormError] = useState('');
-  const { register, isAuthenticated, isLoading, error, clearError } = useAuth();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/dashboard');
-    }
-  }, [isAuthenticated, navigate]);
-
-  useEffect(() => {
-    return () => clearError();
-  }, [clearError]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormError('');
-
-    if (!name || !email || !password || !confirmPassword) {
-      setFormError('Preencha todos os campos');
-      return;
-    }
-
-    if (password.length < 6) {
-      setFormError('A senha deve ter pelo menos 6 caracteres');
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setFormError('As senhas não coincidem');
-      return;
-    }
-
-    try {
-      await register({ name, email, password });
-    } catch {
-      // error is managed by context
-    }
-  };
-
+export default function Register() {
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="bg-bg-card border border-border-default rounded-lg p-8">
-          <h1 className="text-2xl font-bold text-white text-center mb-6">Criar Conta</h1>
+    <div className="mx-auto flex max-w-6xl justify-center px-6">
+      <div className="w-full max-w-md rounded-2xl border border-white/10 bg-white/5 p-6">
+        <h1 className="text-2xl font-semibold tracking-tight">Cadastrar</h1>
+        <p className="mt-2 text-sm text-white/60">Crie sua conta gratuita e comece a compartilhar.</p>
 
-          {(formError || error) && (
-            <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3 mb-6">
-              <p className="text-red-400 text-sm">{formError || error}</p>
-            </div>
-          )}
+        <form className="mt-6 space-y-4">
+          <label className="block">
+            <span className="text-xs font-medium tracking-wide text-white/60">Nome</span>
+            <input
+              type="text"
+              placeholder="Seu nome"
+              className="mt-2 w-full rounded-md border border-white/10 bg-black/30 px-3 py-2 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#00C1D5]/60"
+            />
+          </label>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-text-secondary mb-1">
-                Nome
-              </label>
-              <input
-                id="name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-3 bg-bg-primary border border-border-default rounded-lg text-white placeholder-text-secondary text-sm focus:outline-none focus:border-accent transition-colors"
-                placeholder="Seu nome"
-                required
-              />
-            </div>
+          <label className="block">
+            <span className="text-xs font-medium tracking-wide text-white/60">Email</span>
+            <input
+              type="email"
+              placeholder="voce@exemplo.com"
+              className="mt-2 w-full rounded-md border border-white/10 bg-black/30 px-3 py-2 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#00C1D5]/60"
+            />
+          </label>
 
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-text-secondary mb-1">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 bg-bg-primary border border-border-default rounded-lg text-white placeholder-text-secondary text-sm focus:outline-none focus:border-accent transition-colors"
-                placeholder="seu@email.com"
-                required
-              />
-            </div>
+          <label className="block">
+            <span className="text-xs font-medium tracking-wide text-white/60">Senha</span>
+            <input
+              type="password"
+              placeholder="••••••••"
+              className="mt-2 w-full rounded-md border border-white/10 bg-black/30 px-3 py-2 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-[#00C1D5]/60"
+            />
+          </label>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-text-secondary mb-1">
-                Senha
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 bg-bg-primary border border-border-default rounded-lg text-white placeholder-text-secondary text-sm focus:outline-none focus:border-accent transition-colors"
-                placeholder="Mínimo 6 caracteres"
-                required
-              />
-            </div>
+          <button
+            type="button"
+            className="mt-2 inline-flex h-10 w-full items-center justify-center rounded-md bg-[#00C1D5] text-sm font-semibold text-black transition hover:bg-[#21D4E7]"
+          >
+            Criar conta
+          </button>
+        </form>
 
-            <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-text-secondary mb-1">
-                Confirmar Senha
-              </label>
-              <input
-                id="confirmPassword"
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-4 py-3 bg-bg-primary border border-border-default rounded-lg text-white placeholder-text-secondary text-sm focus:outline-none focus:border-accent transition-colors"
-                placeholder="Repita a senha"
-                required
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full py-3 bg-accent text-black font-semibold rounded-lg hover:bg-cyan-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isLoading ? 'Cadastrando...' : 'Cadastrar'}
-            </button>
-          </form>
-
-          <p className="text-text-secondary text-sm text-center mt-6">
-            Já tem conta?{' '}
-            <Link to="/login" className="text-accent hover:underline">
-              Entre
-            </Link>
-          </p>
-        </div>
+        <p className="mt-6 text-sm text-white/60">
+          Já tem conta?{" "}
+          <Link to="/entrar" className="font-medium text-[#00C1D5] hover:underline">
+            Entrar
+          </Link>
+        </p>
       </div>
     </div>
   );
